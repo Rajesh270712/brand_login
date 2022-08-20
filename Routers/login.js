@@ -3,7 +3,7 @@ const userModel = require("../Database/user");
 const route = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const SECRET = require("../Constants/constants");
+require('dotenv').config()
 
 async function login(req, res) {
   try {
@@ -12,7 +12,7 @@ async function login(req, res) {
     const existingUser = await userModel.findOne({
       email: user.email,
     });
-
+    const SECRET = process.env.SECRET;
     if (existingUser) {
       if (bcrypt.compareSync(user.password, existingUser.password)) {
         const encrypted_token = jwt.sign(
